@@ -8,6 +8,7 @@
 .INPUTS
    Message - Message to output to the console
    MessageType - The type of message to be output
+   ForegroundColor - The color of the text to be used when using 'host' message type
    JenkinsWkPath - Jenkins path to determine/evaluate if the function is being run on a Jenkins server workspace
 .FUNCTIONALITY
     The cmdlet outputs the text prepended with the ANSI character codes to colour the output
@@ -41,21 +42,34 @@ function Write-JenkinsAnsi
         )]
         [Alias('Mt')]
         [String]
-        $MessageType='output',
+        $MessageType='host',
 
-        [Parameter()]
+        [Parameter()] 
+        [ValidateSet(
+             'black'
+            ,'red'
+            ,'green'
+            ,'yellow'
+            ,'blue'
+            ,'magenta'
+            ,'cyan'
+            ,'white'
+        )]
+        [Alias('fgc')]   
+        [String]
+        $ForegroundColor='white',
+
+        [Parameter()]     
         [String]
         $JenkinsWkPath = '.*jenkins\\workspace.*'
     )
 
     Begin {
         $e = [char]27
-        $ForegroundColor = @('black','red','green','yellow','blue','magenta','cyan','white')
-        $fore = (Get-Variable "ForegroundColor").Value | ForEach-Object {$i=0} {@{$_=$i+30};$i++}
+        $fore = (Get-Variable "ForegroundColor").Attributes.ValidValues | ForEach-Object {$i=0} {@{$_=$i+30};$i++}
         switch($MessageType)
         {
             'info'{$ForegroundColor='white'}
-            'host'{$ForegroundColor='white'}
             'output'{$ForegroundColor='white'}  
             'warning'{$ForegroundColor='yellow'}
             'error'{$ForegroundColor='red'}
@@ -88,7 +102,7 @@ function Write-JenkinsAnsi
             switch($MessageType)
             {               
                 'info'{Write-Information $Message}
-                'host'{Write-Host $Message}
+                'host'{Write-Host $Message -ForegroundColor $ForegroundColor}
                 'output'{Write-Output $Message}                              
                 'warning'{Write-warning $Message}
                 'error'{Write-error $Message}
