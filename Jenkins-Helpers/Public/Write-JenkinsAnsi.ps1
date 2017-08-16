@@ -77,7 +77,7 @@ function Write-JenkinsAnsi
             'warning'{$ForegroundColor='yellow'}
             'error'{$ForegroundColor='red'}
             'debug'{$ForegroundColor='cyan'}
-            'verbose'{$ForegroundColor='yellow'}
+            'verbose'{$ForegroundColor='blue'}
             'ok'{$ForegroundColor='green'}
             'panic'{$ForegroundColor='magenta'}            
         }
