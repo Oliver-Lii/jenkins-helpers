@@ -57,16 +57,19 @@ function Write-JenkinsAnsi
         )]
         [Alias('fgc')]   
         [String]
-        $ForegroundColor='white',
-
-        [Parameter()]     
-        [String]
-        $JenkinsWkPath = '.*jenkins\\workspace.*'
+        $ForegroundColor='white'
     )
 
     Begin {
         $e = [char]27
         $fore = (Get-Variable "ForegroundColor").Attributes.ValidValues | ForEach-Object {$i=0} {@{$_=$i+30};$i++}
+
+        # Check if we're called from a Write-* alias and set the messagetype appropriately if we are
+        $Aliases = @("Write-Verbose", "Write-Info", "Write-Warning", "Write-Error", "Write-Debug")
+        if($Aliases -contains $MyInvocation.InvocationName){
+            $MessageType = $MyInvocation.InvocationName -replace 'Write-',''
+        }
+
         switch($MessageType)
         {
             'info'{$ForegroundColor='white'}
@@ -78,39 +81,21 @@ function Write-JenkinsAnsi
             'ok'{$ForegroundColor='green'}
             'panic'{$ForegroundColor='magenta'}            
         }
+        $Message = "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"
     }
 
     Process {
-        $workingPath = $(Resolve-path -Path ".\")
-        if($workingPath -match $JenkinsWkPath)
-        {
-            switch($MessageType)
-            {            
-                'info'{Write-Information "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'host'{Write-Host "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'output'{Write-Output "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}                                
-                'warning'{Write-warning "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'error'{Write-error "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'debug'{Write-debug "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'verbose'{Write-verbose "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'ok'{Write-host "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}
-                'panic'{Write-error "$e[$($fore.$ForegroundColor)m$Message$e[$($fore.white)m"}  
-            }    
-        }
-        else 
-        {
-            switch($MessageType)
-            {               
-                'info'{Write-Information $Message}
-                'host'{Write-Host $Message -ForegroundColor $ForegroundColor}
-                'output'{Write-Output $Message}                              
-                'warning'{Write-warning $Message}
-                'error'{Write-error $Message}
-                'debug'{Write-debug $Message}
-                'verbose'{Write-verbose $Message}
-                'ok'{Write-host $Message -ForegroundColor Green}
-                'panic'{Write-error $Message}    
-            } 
-        }
+        switch($MessageType)
+        {            
+            'info'{Microsoft.PowerShell.Utility\Write-Information $Message}
+            'host'{Microsoft.PowerShell.Utility\Write-Host $Message}
+            'output'{Microsoft.PowerShell.Utility\Write-Output $Message}                                
+            'warning'{Microsoft.PowerShell.Utility\Write-warning $Message}
+            'error'{Microsoft.PowerShell.Utility\Write-error $Message}
+            'debug'{Microsoft.PowerShell.Utility\Write-debug $Message}
+            'verbose'{Microsoft.PowerShell.Utility\Write-verbose $Message}
+            'ok'{Microsoft.PowerShell.Utility\Write-host $Message}
+            'panic'{Microsoft.PowerShell.Utility\Write-error $Message}  
+        }    
     }
 }
