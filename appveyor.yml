@@ -1,4 +1,6 @@
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
+version: 1.1.{build}
+
 
 #Publish to PowerShell Gallery with this key
 environment:

@@ -21,13 +21,13 @@ ModuleVersion = '1.1'
 GUID = '3dafd0fa-7d46-4463-8b83-75b0542dc6b0'
 
 # Author of this module
-Author = 'Cloud Operations'
+Author = 'Oliver Li'
 
 # Company or vendor of this module
-CompanyName = 'SDL'
+CompanyName = 'NA'
 
 # Copyright statement for this module
-Copyright = '(c) 2017 Cloud Operations. All rights reserved.'
+Copyright = '(c) 2017 Oliver Li. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Helper functions specifically related to working on Jenkins'
