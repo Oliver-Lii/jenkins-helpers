@@ -18,5 +18,13 @@ The cmdlet outputs the text prepended with the ANSI character codes to colour th
 Write-JenkinsAnsi - Message "Hello World" -Mt "Verbose"
 ```
 
+## Set-JenkinsAnsiAliases
+This cmdlet aliases the `Write-Verbose`, `Write-Info`, `Write-Warning`, `Write-Error`, and `Write-Debug` cmdlets, negating the need to specifically call `Write-JenkinsAnsi`.
+
+```
+Set-JenkinsAnsiAliases
+Write-Verbose "Hello!!"
+```
+
 # Authors
 - Oliver Li
