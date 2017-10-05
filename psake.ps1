@@ -19,7 +19,7 @@ Properties {
 Task Default -Depends Deploy
 
 Task Test -depends Init {
-    Import-Module 'jenkins-helpers\jenkins-helpers.psd1'
+    Import-Module '.\jenkins-helpers\jenkins-helpers.psd1'
     Invoke-Pester .\tests
 }
 
