@@ -18,6 +18,11 @@ Properties {
 
 Task Default -Depends Deploy
 
+Task Test -depends Init {
+    Import-Module 'jenkins-helpers\jenkins-helpers.psd1'
+    Invoke-Pester .\tests
+}
+
 Task Init {
     '----------------------------------------------------------------------'
     Set-Location $ProjectRoot
@@ -26,7 +31,7 @@ Task Init {
     "`n"
 }
 
-Task Deploy -Depends Init {
+Task Deploy -Depends Test {
     '----------------------------------------------------------------------'    
     # Update Manifest version number
     $ManifestPath = $Env:BHPSModuleManifest
