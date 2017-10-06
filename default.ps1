@@ -35,12 +35,12 @@ Task UpdateManifest -depends Test {
     $Manifest = Test-ModuleManifest -Path $ModuleManifestPath
     [System.Version]$Version = $Manifest.Version
     if( $env:APPVEYOR_BUILD_VERSION){
-        [string]$script:NewVersion = [version]::new($version.Major,$Version.Minor,  $env:APPVEYOR_BUILD_VERSION)
+        [string]$script:NewVersion = $env:APPVEYOR_BUILD_VERSION
     }else{
         [string]$script:NewVersion = [version]::new($version.Major,$Version.Minor, $Version.Build+1)
     }
 
-    Write-Host "New Version: $NewVersion"
+    Write-Host "New Version: $Script:NewVersion"
     
     $FunctionList = @( Get-ChildItem -Path $ModuleRoot\Public\*.ps1 -Recurse -ErrorAction SilentlyContinue ).BaseName
 
@@ -56,14 +56,17 @@ Task Deploy -depends UpdateManifest {
     }
 
     if(Find-Module -Name $script:ModuleName -Repository $script:Repository -MinimumVersion $script:NewVersion -ErrorAction SilentlyContinue){
-        Write-Verbose "`tModule already published at this version [$NewVersion]"
+        Write-Verbose "`tModule already published at this version [$Script:NewVersion]"
         return
     }else{
-        Write-Verbose "`tModule not published at [$NewVersion], proceeding with publishing"
+        Write-Verbose "`tModule not published at [$Script:NewVersion], proceeding with publishing"
     }
     
-    if($env:APPVEYOR_REPO_BRANCH -eq 'master'){
+    if($env:APPVEYOR_REPO_BRANCH -eq 'master' -and -not $env:APPVEYOR_PULL_REQUEST_NUMBER){
+        Write-Verbose "Ensuring $script:ModuleName is not loaded by removing it"
         Remove-Module $script:ModuleName -Force -ErrorAction SilentlyContinue
+        
+        Write-Verbose "Publishing $script:ModuleName to $script:Repository as v$Script:NewVersion"
         Publish-Module -Path $script:ModuleRoot -Repository $script:Repository -Verbose -NuGetApiKey $env:NugetAPIKey -Force
     }else{
         Write-Verbose "`tModule not publishing because we're not in the Master branch"
