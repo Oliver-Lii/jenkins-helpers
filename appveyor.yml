@@ -24,5 +24,6 @@ test_script:
   - ps: |
       Get-PackageProvider -Name NuGet -Force;
       Install-Module -Name Psake -Force;
+      $global:VerbosePreference = "Continue";
       Invoke-psake -buildFile .\default.ps1 -taskList default
       exit ( [int]( -not $psake.build_success ) )
