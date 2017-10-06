@@ -51,7 +51,7 @@ Task UpdateManifest -depends Test {
 Task Deploy -depends UpdateManifest {
 
     if(! $env:APPVEYOR_BUILD_VERSION){
-        Write-Verbose "Not running in Jenkins, exiting"
+        Write-Verbose "Not running in Appveyor, exiting"
         return
     }
 
@@ -69,7 +69,7 @@ Task Deploy -depends UpdateManifest {
         Write-Verbose "Publishing $script:ModuleName to $script:Repository as v$Script:NewVersion"
         Publish-Module -Path $script:ModuleRoot -Repository $script:Repository -Verbose -NuGetApiKey $env:NugetAPIKey -Force
     }else{
-        Write-Verbose "`tModule not publishing because we're not in the Master branch"
+        Write-Verbose "`tModule not publishing because we're not in the Master branch (or we're in a pull request"
     }
 
 }

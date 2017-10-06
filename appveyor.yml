@@ -26,4 +26,5 @@ test_script:
       Install-Module -Name Psake -Force;
       $global:VerbosePreference = "Continue";
       Invoke-psake -buildFile .\default.ps1 -taskList default
+      Write-Host "Exiting with $( [int]( -not $psake.build_success ) )"
       exit ( [int]( -not $psake.build_success ) )
