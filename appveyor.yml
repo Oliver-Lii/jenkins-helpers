@@ -20,6 +20,6 @@ build: false
 #Kick off the CI/CD pipeline
 test_script:
   - ps: |
-  Get-PackageProvider -Name NuGet -Force;
-  Install-Module -Name Psake -Force;
-  Invoke-Psake
+      Get-PackageProvider -Name NuGet -Force;
+      Install-Module -Name Psake -Force;
+      Invoke-Psake
