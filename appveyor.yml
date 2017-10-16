@@ -8,10 +8,12 @@ environment:
     secure: AIbS1wYpJuS5smWmeVDw5Bs9BmYV5q66BiJvg6hiJHHoELHnreIdclPuhBcaDdsS
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+image:
+  - Visual Studio 2017
+
 
 # Skip on updates to the readme.
-# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
@@ -19,4 +21,9 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-  - ps: . .\build.ps1
+  - ps: |
+      Get-PackageProvider -Name NuGet -Force;
+      Install-Module -Name Psake -Force;
+      $global:VerbosePreference = "Continue";
+      Invoke-psake -buildFile .\default.ps1 -taskList default
+      if( -not $psake.build_success ){exit 1}

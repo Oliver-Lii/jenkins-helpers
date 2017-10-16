@@ -57,7 +57,18 @@ function Write-JenkinsAnsi
         )]
         [Alias('fgc')]   
         [String]
-        $ForegroundColor='white'
+        $ForegroundColor='white',
+
+        # Error params
+        $ErrorID,
+        $Category,
+        $CategoryActivity,
+        $CategoryReason,
+        $CategoryTargetName,
+        $CategoryTargetType,
+
+        # Info params
+        $Tags
     )
 
     Begin {
