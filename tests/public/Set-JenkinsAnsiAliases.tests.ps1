@@ -9,7 +9,7 @@ Describe "Set-JenkinsAnsiAliases"{
     }
     
     It "Should work with complex error"{
-        {Write-Error "Hello" -Category CloseError -CategoryActivity 'Boop' -CategoryReason 'Reasons' -CategoryTargetName 'Target' -CategoryTargetType 'TargetType' -ErrorId 23 -ErrorAction SilentlyContinue} | Should not throw
+        {Write-Error "Hello" -Category CloseError -CategoryActivity 'Boop' -CategoryReason 'Reasons' -CategoryTargetName 'Target' -CategoryTargetType 'TargetType' -ErrorId 23 -TargetObject "test" -RecommendedAction "test" -ErrorAction SilentlyContinue} | Should not throw
     }
 
     It "Should work with basic verbose"{
