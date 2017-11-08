@@ -66,6 +66,8 @@ function Write-JenkinsAnsi
         $CategoryReason,
         $CategoryTargetName,
         $CategoryTargetType,
+        $TargetObject,
+        $RecommendedAction,
 
         # Info params
         $Tags
