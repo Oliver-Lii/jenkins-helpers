@@ -1,4 +1,4 @@
-# Jenkins-Helpers [![Build status](https://ci.appveyor.com/api/projects/status/50pw9dvc6f2h452i/branch/master?svg=true)](https://ci.appveyor.com/project/Oliver-Lii/jenkins-helpers/branch/master)
+# Jenkins-Helpers [![Build status](https://ci.appveyor.com/api/projects/status/50pw9dvc6f2h452i/branch/master?svg=true)](https://ci.appveyor.com/project/Oliver-Lii/jenkins-helpers/branch/master) [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/Jenkins-Helpers.svg)]()
 This module was written to support colour coding the output from a Jenkins Powershell step to enable improved legibility. Additional functionality may be added later and I will use this as a generic module to house Powershell functions specific to Jenkins jobs.
 
 ![wirte-jenkinsansiexample](https://user-images.githubusercontent.com/30263630/29353178-3898b282-8261-11e7-8967-06346f36f5b0.PNG)
